@@ -1,4 +1,4 @@
-// Tarefa 03 — Builder
+// — Builder
 class Pedido {
   constructor(itens, endereco, pagamento) {
     this.itens = itens;

@@ -1,4 +1,4 @@
-// Tarefas 04 a 09 — Padrões Estruturais e Comportamentais
+
 
 // Adapter
 class GatewayLegado {

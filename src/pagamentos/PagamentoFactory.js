@@ -1,4 +1,4 @@
-// Tarefa 02 — Factory Method
+// — Factory Method
 const CartaoCredito = require("./CartaoCredito");
 const Pix = require("./Pix");
 const Boleto = require("./Boleto");

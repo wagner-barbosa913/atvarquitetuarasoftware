@@ -1,4 +1,4 @@
-// Tarefa 01 — Singleton
+// — Singleton
 class Conexao {
   constructor() {
     this.url = "mysql://localhost:3306/ecommerce";
