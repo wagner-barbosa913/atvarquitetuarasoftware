@@ -1,0 +1,8 @@
+{
+  "name": "atvarquitetuarasoftware",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "start": "node src/main.js"
+  }
+}

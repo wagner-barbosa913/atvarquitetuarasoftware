@@ -1,4 +1,4 @@
-# E-commerce — Padrões Criacionais
+# E-commerce — Padrões Criacionais, Estruturais e Comportamentais
 
 ## Alunos
 - Wagner Luz Barbosa Junior
@@ -20,6 +20,7 @@ src/
     CartaoCredito.js
     Pix.js
     Boleto.js
+  patternsAdicionais.js   ← Adapter, Decorator, Facade, Strategy, Observer, Command
   main.js                 ← Demonstração
 ```
 
@@ -64,3 +65,70 @@ new PedidoBuilder()
 ```
 
 Além disso, o `build()` centraliza todas as validações antes de criar o objeto, garantindo que nenhum pedido inválido seja criado.
+
+---
+
+### Tarefa 04 — Adapter
+
+Sem o Adapter, o código cliente teria que conhecer a API antiga do gateway e espalhar conversões pelo sistema. O Adapter mantém o contrato atual e encapsula a tradução para o legado.
+
+### Tarefa 05 — Decorator
+
+Os decorators permitem combinar log e desconto sem alterar `Pix`, `Boleto` ou `CartaoCredito`. É mais flexível do que herança simples porque a composição acontece em tempo de execução.
+
+### Tarefa 06 — Facade
+
+A Facade concentra a orquestração de estoque, pagamento, carrinho e e-mail. Sem ela, o controller ficaria acoplado a todos esses subsistemas e quebraria mais facilmente quando uma API mudasse.
+
+### Tarefa 07 — Strategy
+
+O carrinho recebe a estratégia de frete por composição e troca de transportadora em tempo de execução. Para adicionar uma nova transportadora, basta criar outra estratégia.
+
+### Tarefa 08 — Observer
+
+O `Pedido` mantém uma lista de observers e notifica todos quando o status muda. Para incluir SMS, por exemplo, não é preciso alterar a classe `Pedido`.
+
+### Tarefa 09 — Command
+
+Os comandos encapsulam ações e guardam estado anterior para desfazer. Além do undo, isso ajuda a enfileirar, auditar e processar ações de forma assíncrona.
+
+---
+
+## Decisões arquiteturais
+
+### Adapter
+
+Usei `GatewayLegado` com API diferente e `GatewayAdapter` para expor o contrato já usado pelo sistema.
+
+### Decorator
+
+Os decorators envolvem um pagamento real e delegam a chamada, permitindo adicionar responsabilidades sem mexer nas classes existentes.
+
+### Facade
+
+`CheckoutFacade.finalizar(pedido)` reúne o fluxo de finalização em um único ponto.
+
+### Strategy
+
+`Carrinho` troca a política de frete por injeção de estratégia.
+
+### Observer
+
+`Pedido` notifica `EmailObserver`, `EstoqueObserver` e `LogObserver` quando muda de estado.
+
+### Command
+
+`GerenciadorComandos` mantém histórico e permite desfazer cancelamento e alteração de endereço.
+
+---
+
+## Diagrama ASCII
+
+```text
+GatewayAdapter -> GatewayLegado
+LogDecorator -> DescontoDecorator -> Pagamento real
+CheckoutFacade -> EstoqueService + PagamentoService + CarrinhoService + EmailService
+Carrinho -> EstrategiaFrete -> FreteCorreios / FreteJadlog / FreteRetirada
+Pedido -> EmailObserver / EstoqueObserver / LogObserver
+GerenciadorComandos -> CancelarPedidoComando / AtualizarEnderecoComando
+```
